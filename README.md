@@ -1,5 +1,5 @@
 # raspberrypi_co2_detect
-##接続構成
+## 接続構成
 ![](raspberrypi_co2_detector.png)
 ## Rasberry Pi OSの準備
 1. Raspberry pi OS liteをインストール
