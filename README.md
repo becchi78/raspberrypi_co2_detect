@@ -81,7 +81,7 @@ mkdir bin
 cd bin
 sudo git init
 ```	
-##OLEDのプログラム実装
+## OLEDのプログラム実装
 1. 必要なライブラリをインストール
 ```
 　pip3 install pillow
