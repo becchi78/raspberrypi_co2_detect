@@ -1,9 +1,9 @@
 """Command line interface for CO2 detector."""
 
 import argparse
+from collections.abc import Sequence
 import json
 import sys
-from typing import Optional, Sequence
 
 from co2_detector.config import Config
 from co2_detector.display.oled_ssd1306 import SSD1306Display
@@ -21,14 +21,28 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
 
     # Command: run (Default continuous monitor)
-    run_parser = subparsers.add_parser("run", help="Start continuous air quality monitoring service")
-    run_parser.add_argument("--interval", type=float, default=60.0, help="Sampling interval in seconds (default: 60)")
+    run_parser = subparsers.add_parser(
+        "run", help="Start continuous air quality monitoring service"
+    )
+    run_parser.add_argument(
+        "--interval",
+        type=float,
+        default=60.0,
+        help="Sampling interval in seconds (default: 60)",
+    )
     run_parser.add_argument("--no-display", action="store_true", help="Disable OLED display updates")
     run_parser.add_argument("--slack", action="store_true", help="Enable Slack alerts")
     run_parser.add_argument("--webhook-url", type=str, default=None, help="Slack webhook URL")
     run_parser.add_argument("--teams", action="store_true", help="Enable Microsoft Teams alerts")
-    run_parser.add_argument("--teams-webhook-url", type=str, default=None, help="Microsoft Teams webhook URL")
-    run_parser.add_argument("--log-level", choices=["DEBUG", "INFO", "WARNING", "ERROR"], default="INFO", help="Log level")
+    run_parser.add_argument(
+        "--teams-webhook-url", type=str, default=None, help="Microsoft Teams webhook URL"
+    )
+    run_parser.add_argument(
+        "--log-level",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR"],
+        default="INFO",
+        help="Log level",
+    )
 
     # Command: read (Single reading)
     read_parser = subparsers.add_parser("read", help="Perform a single air quality measurement")
@@ -36,8 +50,12 @@ def build_parser() -> argparse.ArgumentParser:
 
     # Command: display (Update display with latest state)
     disp_parser = subparsers.add_parser("display", help="Render latest reading onto OLED display")
-    disp_parser.add_argument("--co2", type=int, default=None, help="Directly specify CO2 ppm to display")
-    disp_parser.add_argument("--tvoc", type=int, default=0, help="Directly specify TVOC ppb to display")
+    disp_parser.add_argument(
+        "--co2", type=int, default=None, help="Directly specify CO2 ppm to display"
+    )
+    disp_parser.add_argument(
+        "--tvoc", type=int, default=0, help="Directly specify TVOC ppb to display"
+    )
 
     return parser
 
@@ -124,7 +142,7 @@ def handle_display(args: argparse.Namespace, config: Config) -> int:
         display.close()
 
 
-def main(argv: Optional[Sequence[str]] = None) -> int:
+def main(argv: Sequence[str] | None = None) -> int:
     """Main CLI entrypoint."""
     parser = build_parser()
     args = parser.parse_args(argv)

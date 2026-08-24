@@ -1,9 +1,9 @@
 """Tests for configuration management."""
 
 import os
+from pathlib import Path
 import tempfile
 import unittest
-from pathlib import Path
 from unittest import mock
 
 from co2_detector.config import Config

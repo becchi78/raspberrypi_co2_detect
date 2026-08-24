@@ -58,7 +58,9 @@ select = [
     "B",    # flake8-bugbear
     "UP",   # pyupgrade
 ]
-ignore = []
+ignore = [
+    "E501", # Line length (handled by ruff format)
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

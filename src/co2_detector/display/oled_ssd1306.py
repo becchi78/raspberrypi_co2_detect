@@ -2,7 +2,7 @@
 
 import logging
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 try:
     from PIL import Image, ImageDraw, ImageFont
@@ -35,8 +35,8 @@ class SSD1306Display(BaseDisplay):
         height: int = 64,
         i2c_address: int = 0x3C,
         i2c_bus: int = 1,
-        font_path: Optional[str] = None,
-        driver: Optional[Any] = None,
+        font_path: str | None = None,
+        driver: Any | None = None,
     ) -> None:
         self.width = width
         self.height = height
@@ -52,9 +52,9 @@ class SSD1306Display(BaseDisplay):
         if self._driver is None:
             self._driver = self._init_hardware_driver()
 
-        self.last_image: Optional[Any] = None
+        self.last_image: Any | None = None
 
-    def _init_hardware_driver(self) -> Optional[Any]:
+    def _init_hardware_driver(self) -> Any | None:
         """Try to initialize hardware SSD1306 driver, gracefully handle missing hardware/libs."""
         # 1. Try modern adafruit-circuitpython-ssd1306
         try:
@@ -194,8 +194,8 @@ class DummyDisplay(BaseDisplay):
     """No-op display for testing or headless environments."""
 
     def __init__(self) -> None:
-        self.last_data: Optional[AirQualityData] = None
-        self.last_message: Optional[tuple[str, str]] = None
+        self.last_data: AirQualityData | None = None
+        self.last_message: tuple[str, str] | None = None
         self.cleared = False
 
     def show_air_quality(self, data: AirQualityData) -> None:

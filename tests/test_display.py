@@ -5,7 +5,7 @@ from unittest.mock import MagicMock
 
 try:
     from PIL import Image
-except ImportError:
+except ImportError:  # pragma: no cover
     Image = None
 
 from co2_detector.display.oled_ssd1306 import DummyDisplay, SSD1306Display
@@ -37,6 +37,7 @@ class TestDisplay(unittest.TestCase):
         data = AirQualityData(eco2_ppm=1200, tvoc_ppb=80, status=AirStatus.HIGH)
 
         img_air = disp.render_air_quality_image(data)
+        assert Image is not None
         self.assertIsInstance(img_air, Image.Image)
         self.assertEqual(img_air.size, (128, 64))
         self.assertEqual(img_air.mode, "1")

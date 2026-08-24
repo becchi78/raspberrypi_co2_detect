@@ -5,7 +5,13 @@ try:
 except ImportError:
     pytest = None
 
-from co2_detector.sensors.ccs811 import EXPECTED_HW_ID, REG_ALG_RESULT_DATA, REG_ERROR_ID, REG_HW_ID, REG_STATUS
+from co2_detector.sensors.ccs811 import (
+    EXPECTED_HW_ID,
+    REG_ALG_RESULT_DATA,
+    REG_ERROR_ID,
+    REG_HW_ID,
+    REG_STATUS,
+)
 
 
 class MockSMBus:

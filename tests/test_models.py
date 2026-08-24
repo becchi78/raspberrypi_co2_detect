@@ -1,7 +1,7 @@
 """Tests for data models and AirStatus enum."""
 
-import unittest
 from datetime import datetime, timezone
+import unittest
 
 from co2_detector.models import AirQualityData, AirStatus
 

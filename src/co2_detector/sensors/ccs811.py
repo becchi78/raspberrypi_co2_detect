@@ -1,9 +1,8 @@
 """CCS811 Air Quality (eCO2 & TVOC) Sensor Driver."""
 
+from enum import IntEnum
 import logging
 import time
-from enum import IntEnum
-from typing import Optional
 
 from co2_detector.exceptions import (
     DeviceNotFoundError,
@@ -62,7 +61,7 @@ class CCS811Sensor(BaseAirSensor):
         bus_number: int = 1,
         address: int = DEFAULT_ADDRESS,
         mode: DriveMode = DriveMode.EVERY_1SEC,
-        bus: Optional[I2CBusProtocol] = None,
+        bus: I2CBusProtocol | None = None,
     ) -> None:
         self.address = address
         self._owned_bus = False

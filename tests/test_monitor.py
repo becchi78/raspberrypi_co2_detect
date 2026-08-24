@@ -1,9 +1,9 @@
 """Tests for AirConditionMonitor service."""
 
 import json
+from pathlib import Path
 import tempfile
 import unittest
-from pathlib import Path
 from unittest.mock import MagicMock
 
 from co2_detector.config import Config
@@ -89,14 +89,11 @@ class TestMonitor(unittest.TestCase):
             display=display,
             notifier=notifier,
         )
-        monitor.current_status = AirStatus.LOW
 
         data = monitor.step()
         self.assertIsNotNone(data)
-        assert data is not None
-        self.assertEqual(data.status, AirStatus.HIGH)
-        self.assertTrue(notifier.notify_status_change.called)
         self.assertEqual(monitor.current_status, AirStatus.HIGH)
+        self.assertTrue(notifier.notify_status_change.called)
 
     def test_monitor_step_sensor_error_handling(self) -> None:
         sensor = DummySensor()
@@ -114,16 +111,27 @@ class TestMonitor(unittest.TestCase):
         data = monitor.step()
         self.assertIsNone(data)
         self.assertTrue(notifier.notify_error.called)
-        self.assertIsNotNone(display.last_message)
-        assert display.last_message is not None
-        self.assertIn("Sensor Error", display.last_message[0])
+        self.assertEqual(display.last_message, ("Sensor Error", "Simulated sensor fa"))
 
-    def test_monitor_stop(self) -> None:
+    def test_monitor_conditioning_status(self) -> None:
+        # CCS811 outputs eCO2 < 400 during early boot/burn-in
+        sensor = DummySensor(eco2=350, tvoc=0)
+        display = DummyDisplay()
+
         monitor = AirConditionMonitor(
             config=Config(),
-            sensor=DummySensor(),
-            display=DummyDisplay(),
+            sensor=sensor,
+            display=display,
         )
+
+        data = monitor.step()
+        self.assertIsNotNone(data)
+        assert data is not None
+        self.assertEqual(data.status, AirStatus.CONDITIONING)
+        self.assertEqual(display.last_message, ("Conditioning...", "350 ppm"))
+
+    def test_monitor_stop(self) -> None:
+        monitor = AirConditionMonitor(config=Config(), sensor=DummySensor(), display=DummyDisplay())
         monitor._running = True
         monitor.stop()
         self.assertFalse(monitor._running)

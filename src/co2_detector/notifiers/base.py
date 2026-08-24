@@ -1,7 +1,6 @@
 """Base notifier interface."""
 
 from abc import ABC, abstractmethod
-from typing import Optional
 
 from co2_detector.models import AirQualityData, AirStatus
 
@@ -23,10 +22,10 @@ class BaseNotifier(ABC):
 class CompositeNotifier(BaseNotifier):
     """Dispatches notifications to multiple underlying notifiers."""
 
-    def __init__(self, notifiers: Optional[list[BaseNotifier]] = None) -> None:
+    def __init__(self, notifiers: list[BaseNotifier] | None = None) -> None:
         self.notifiers: list[BaseNotifier] = [n for n in (notifiers or []) if n is not None]
 
-    def add(self, notifier: Optional[BaseNotifier]) -> None:
+    def add(self, notifier: BaseNotifier | None) -> None:
         """Add a notifier to the composite."""
         if notifier is not None:
             self.notifiers.append(notifier)
@@ -38,4 +37,3 @@ class CompositeNotifier(BaseNotifier):
     def notify_error(self, message: str) -> bool:
         results = [n.notify_error(message) for n in self.notifiers]
         return any(results) if results else False
-

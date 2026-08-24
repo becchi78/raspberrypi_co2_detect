@@ -5,15 +5,15 @@ import logging
 import signal
 import sys
 import time
-from typing import Optional
 
 from co2_detector.config import Config
 from co2_detector.display.base import BaseDisplay
 from co2_detector.display.oled_ssd1306 import DummyDisplay, SSD1306Display
 from co2_detector.exceptions import SensorError
 from co2_detector.models import AirQualityData, AirStatus
-from co2_detector.notifiers.base import BaseNotifier
+from co2_detector.notifiers.base import BaseNotifier, CompositeNotifier
 from co2_detector.notifiers.slack import SlackNotifier
+from co2_detector.notifiers.teams import TeamsNotifier
 from co2_detector.sensors.base import BaseAirSensor
 from co2_detector.sensors.ccs811 import CCS811Sensor
 
@@ -25,10 +25,10 @@ class AirConditionMonitor:
 
     def __init__(
         self,
-        config: Optional[Config] = None,
-        sensor: Optional[BaseAirSensor] = None,
-        display: Optional[BaseDisplay] = None,
-        notifier: Optional[BaseNotifier] = None,
+        config: Config | None = None,
+        sensor: BaseAirSensor | None = None,
+        display: BaseDisplay | None = None,
+        notifier: BaseNotifier | None = None,
     ) -> None:
         self.config = config or Config()
         self.config.ensure_directories()
@@ -64,8 +64,6 @@ class AirConditionMonitor:
                     )
                 )
             if self.config.enable_teams and self.config.teams_webhook_url:
-                from co2_detector.notifiers.teams import TeamsNotifier
-
                 notifiers_list.append(
                     TeamsNotifier(
                         webhook_url=self.config.teams_webhook_url,
@@ -75,14 +73,12 @@ class AirConditionMonitor:
             if len(notifiers_list) == 1:
                 self.notifier = notifiers_list[0]
             elif len(notifiers_list) > 1:
-                from co2_detector.notifiers.base import CompositeNotifier
-
                 self.notifier = CompositeNotifier(notifiers_list)
             else:
                 self.notifier = None
 
         self.current_status: AirStatus = AirStatus.LOW
-        self.last_data: Optional[AirQualityData] = None
+        self.last_data: AirQualityData | None = None
         self._running = False
 
     def _setup_logging(self) -> None:
@@ -119,7 +115,7 @@ class AirConditionMonitor:
         except Exception as e:
             logger.warning("Failed to save state file: %s", e)
 
-    def step(self) -> Optional[AirQualityData]:
+    def step(self) -> AirQualityData | None:
         """Perform a single measurement and notification cycle."""
         if not self.sensor.is_data_ready():
             logger.debug("Sensor data not ready yet.")
@@ -148,7 +144,9 @@ class AirConditionMonitor:
 
         # Status change notification
         if status != self.current_status:
-            logger.info("Air quality status changed: %s -> %s", self.current_status.value, status.value)
+            logger.info(
+                "Air quality status changed: %s -> %s", self.current_status.value, status.value
+            )
             if self.notifier:
                 self.notifier.notify_status_change(data, self.current_status)
             self.current_status = status
@@ -180,7 +178,10 @@ class AirConditionMonitor:
         signal.signal(signal.SIGINT, _signal_handler)
         signal.signal(signal.SIGTERM, _signal_handler)
 
-        logger.info("Starting AirConditionMonitor loop (interval: %.1fs)...", self.config.interval_seconds)
+        logger.info(
+            "Starting AirConditionMonitor loop (interval: %.1fs)...",
+            self.config.interval_seconds,
+        )
 
         if self.display:
             self.display.show_message("CO2 Monitor", "Starting...")

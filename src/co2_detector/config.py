@@ -1,9 +1,8 @@
 """Configuration management for CO2 detector."""
 
-import os
 from dataclasses import dataclass, field
+import os
 from pathlib import Path
-from typing import Optional
 
 from co2_detector.models import AirStatus
 
@@ -29,9 +28,9 @@ class Config:
 
     # Paths
     base_dir: Path = field(default_factory=lambda: Path(__file__).resolve().parent.parent.parent)
-    log_dir: Optional[Path] = None
-    log_file: Optional[Path] = None
-    state_file: Optional[Path] = None
+    log_dir: Path | None = None
+    log_file: Path | None = None
+    state_file: Path | None = None
 
     # Feature Toggles
     enable_display: bool = True

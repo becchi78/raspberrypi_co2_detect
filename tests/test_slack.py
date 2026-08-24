@@ -2,8 +2,8 @@
 
 import json
 import unittest
-import urllib.error
 from unittest.mock import MagicMock, patch
+import urllib.error
 
 from co2_detector.models import AirQualityData, AirStatus
 from co2_detector.notifiers.slack import SlackNotifier
@@ -56,7 +56,9 @@ class TestSlack(unittest.TestCase):
         notifier = SlackNotifier(webhook_url="https://hooks.slack.com/services/test/xxx/yyy")
         data = AirQualityData(eco2_ppm=1600, tvoc_ppb=120, status=AirStatus.HIGH)
 
-        with patch("urllib.request.urlopen", side_effect=urllib.error.URLError("Network unreachable")):
+        with patch(
+            "urllib.request.urlopen", side_effect=urllib.error.URLError("Network unreachable")
+        ):
             result = notifier.notify_status_change(data, AirStatus.LOW)
             self.assertFalse(result)
 
