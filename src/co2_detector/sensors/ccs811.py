@@ -1,8 +1,8 @@
 """CCS811 Air Quality (eCO2 & TVOC) Sensor Driver."""
 
-from enum import IntEnum
 import logging
 import time
+from enum import IntEnum
 
 from co2_detector.exceptions import (
     DeviceNotFoundError,
@@ -185,9 +185,7 @@ class CCS811Sensor(BaseAirSensor):
         try:
             self._bus.write_i2c_block_data(self.address, register, data)
         except Exception as e:
-            raise SensorReadError(
-                f"Failed to write data to reg 0x{register:02X}: {e}"
-            ) from e
+            raise SensorReadError(f"Failed to write data to reg 0x{register:02X}: {e}") from e
 
     def close(self) -> None:
         """Close I2C bus connection if owned."""

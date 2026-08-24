@@ -75,6 +75,7 @@ class MockSMBus:
 
 
 if pytest is not None:
+
     @pytest.fixture
     def mock_bus() -> MockSMBus:
         """Fixture providing a standard mock I2C bus."""

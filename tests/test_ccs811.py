@@ -8,12 +8,11 @@ from co2_detector.exceptions import (
     SensorReadError,
 )
 from co2_detector.sensors.ccs811 import (
-    CCS811Sensor,
-    DriveMode,
     REG_ERROR_ID,
-    REG_HW_ID,
     REG_MEAS_MODE,
     REG_STATUS,
+    CCS811Sensor,
+    DriveMode,
 )
 from tests.conftest import MockSMBus
 

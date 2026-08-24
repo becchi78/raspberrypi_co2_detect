@@ -1,7 +1,7 @@
 """Tests for data models and AirStatus enum."""
 
-from datetime import datetime, timezone
 import unittest
+from datetime import UTC, datetime
 
 from co2_detector.models import AirQualityData, AirStatus
 
@@ -19,7 +19,7 @@ class TestModels(unittest.TestCase):
         self.assertTrue(AirStatus.TOO_HIGH.is_alert)
 
     def test_air_quality_data_creation_and_serialization(self) -> None:
-        now = datetime(2026, 8, 24, 12, 0, 0, tzinfo=timezone.utc)
+        now = datetime(2026, 8, 24, 12, 0, 0, tzinfo=UTC)
         data = AirQualityData(
             eco2_ppm=850,
             tvoc_ppb=42,

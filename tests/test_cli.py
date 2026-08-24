@@ -19,18 +19,20 @@ class TestCLI(unittest.TestCase):
 
     def test_cli_parser_options(self) -> None:
         parser = build_parser()
-        args = parser.parse_args([
-            "run",
-            "--interval",
-            "15",
-            "--no-display",
-            "--slack",
-            "--teams",
-            "--teams-webhook-url",
-            "https://test.teams",
-            "--log-level",
-            "DEBUG",
-        ])
+        args = parser.parse_args(
+            [
+                "run",
+                "--interval",
+                "15",
+                "--no-display",
+                "--slack",
+                "--teams",
+                "--teams-webhook-url",
+                "https://test.teams",
+                "--log-level",
+                "DEBUG",
+            ]
+        )
         self.assertEqual(args.command, "run")
         self.assertEqual(args.interval, 15.0)
         self.assertTrue(args.no_display)

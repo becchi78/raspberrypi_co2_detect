@@ -50,6 +50,7 @@ class AirConditionMonitor:
         else:
             self.display = DummyDisplay()
 
+        self.notifier: BaseNotifier | None
         if notifier is not None:
             self.notifier = notifier
         else:

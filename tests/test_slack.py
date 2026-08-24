@@ -2,8 +2,8 @@
 
 import json
 import unittest
-from unittest.mock import MagicMock, patch
 import urllib.error
+from unittest.mock import MagicMock, patch
 
 from co2_detector.models import AirQualityData, AirStatus
 from co2_detector.notifiers.slack import SlackNotifier

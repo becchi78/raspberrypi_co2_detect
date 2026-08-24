@@ -1,9 +1,9 @@
 """Command line interface for CO2 detector."""
 
 import argparse
-from collections.abc import Sequence
 import json
 import sys
+from collections.abc import Sequence
 
 from co2_detector.config import Config
 from co2_detector.display.oled_ssd1306 import SSD1306Display
@@ -30,7 +30,9 @@ def build_parser() -> argparse.ArgumentParser:
         default=60.0,
         help="Sampling interval in seconds (default: 60)",
     )
-    run_parser.add_argument("--no-display", action="store_true", help="Disable OLED display updates")
+    run_parser.add_argument(
+        "--no-display", action="store_true", help="Disable OLED display updates"
+    )
     run_parser.add_argument("--slack", action="store_true", help="Enable Slack alerts")
     run_parser.add_argument("--webhook-url", type=str, default=None, help="Slack webhook URL")
     run_parser.add_argument("--teams", action="store_true", help="Enable Microsoft Teams alerts")

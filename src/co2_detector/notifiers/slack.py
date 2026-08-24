@@ -66,7 +66,9 @@ class SlackNotifier(BaseNotifier):
         elif data.status in (AirStatus.TOO_HIGH, AirStatus.ERROR):
             color = "danger"
 
-        fallback = f"CO2 level is {data.status.value}: {data.eco2_ppm:,} ppm (TVOC: {data.tvoc_ppb} ppb)"
+        fallback = (
+            f"CO2 level is {data.status.value}: {data.eco2_ppm:,} ppm (TVOC: {data.tvoc_ppb} ppb)"
+        )
         payload = {
             "channel": self.channel,
             "username": self.username,
