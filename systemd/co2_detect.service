@@ -1,0 +1,17 @@
+[Unit]
+Description=Raspberry Pi CO2 & Air Quality Monitor Service
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/raspberrypi_co2_detect
+EnvironmentFile=-/etc/co2_detector.env
+ExecStart=/usr/bin/python3 -m co2_detector.cli run
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
