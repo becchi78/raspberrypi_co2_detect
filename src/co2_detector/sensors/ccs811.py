@@ -3,6 +3,7 @@
 import logging
 import time
 from enum import IntEnum
+from typing import Self
 
 from co2_detector.exceptions import (
     DeviceNotFoundError,
@@ -195,7 +196,7 @@ class CCS811Sensor(BaseAirSensor):
             except Exception as e:
                 logger.warning("Error closing I2C bus: %s", e)
 
-    def __enter__(self) -> "CCS811Sensor":
+    def __enter__(self) -> Self:
         return self
 
     def __exit__(self, exc_type: object, exc_val: object, exc_tb: object) -> None:

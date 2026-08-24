@@ -14,7 +14,9 @@ logger = logging.getLogger(__name__)
 
 
 class TeamsNotifier(BaseNotifier):
-    """Sends notifications to Microsoft Teams via Incoming Webhooks / Workflows using standard library."""
+    """Sends notifications to Microsoft Teams via Incoming Webhooks / Workflows
+    using standard library.
+    """
 
     def __init__(
         self,

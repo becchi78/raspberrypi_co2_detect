@@ -3,6 +3,7 @@
 import argparse
 import json
 import sys
+import time
 from collections.abc import Sequence
 
 from co2_detector.config import Config
@@ -37,7 +38,10 @@ def build_parser() -> argparse.ArgumentParser:
     run_parser.add_argument("--webhook-url", type=str, default=None, help="Slack webhook URL")
     run_parser.add_argument("--teams", action="store_true", help="Enable Microsoft Teams alerts")
     run_parser.add_argument(
-        "--teams-webhook-url", type=str, default=None, help="Microsoft Teams webhook URL"
+        "--teams-webhook-url",
+        type=str,
+        default=None,
+        help="Microsoft Teams webhook URL",
     )
     run_parser.add_argument(
         "--log-level",
@@ -99,8 +103,6 @@ def handle_read(args: argparse.Namespace, config: Config) -> int:
         for _ in range(50):
             if sensor.is_data_ready():
                 break
-            import time
-
             time.sleep(0.1)
 
         eco2, tvoc = sensor.read_measurement()
