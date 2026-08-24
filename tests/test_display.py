@@ -6,7 +6,7 @@ from unittest.mock import MagicMock
 try:
     from PIL import Image
 except ImportError:  # pragma: no cover
-    Image = None
+    Image = None  # type: ignore[assignment]
 
 from co2_detector.display.oled_ssd1306 import DummyDisplay, SSD1306Display
 from co2_detector.exceptions import DisplayError

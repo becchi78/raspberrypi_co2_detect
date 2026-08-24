@@ -3,7 +3,7 @@
 try:
     import pytest
 except ImportError:
-    pytest = None
+    pytest = None  # type: ignore[assignment]
 
 from co2_detector.sensors.ccs811 import (
     EXPECTED_HW_ID,
