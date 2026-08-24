@@ -111,7 +111,7 @@ class TestMonitor(unittest.TestCase):
         data = monitor.step()
         self.assertIsNone(data)
         self.assertTrue(notifier.notify_error.called)
-        self.assertEqual(display.last_message, ("Sensor Error", "Simulated sensor fa"))
+        self.assertEqual(display.last_message, ("Sensor Error", "Simulated sensor fai"))
 
     def test_monitor_conditioning_status(self) -> None:
         # CCS811 outputs eCO2 < 400 during early boot/burn-in
