@@ -3,12 +3,10 @@
 import io
 import json
 import unittest
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 from co2_detector.cli import build_parser, main
 from co2_detector.models import AirQualityData, AirStatus
-from tests.conftest import MockSMBus
 
 
 class TestCLI(unittest.TestCase):

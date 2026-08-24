@@ -63,7 +63,7 @@ ignore = []
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
-addopts = "-v --cov=co2_detector --cov-report=term-missing"
+addopts = "-v"
 
 [tool.mypy]
 python_version = "3.12"

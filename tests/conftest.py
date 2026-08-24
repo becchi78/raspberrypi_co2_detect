@@ -1,7 +1,5 @@
 """Pytest fixtures and test doubles for I2C and sensors."""
 
-from typing import Optional
-
 try:
     import pytest
 except ImportError:

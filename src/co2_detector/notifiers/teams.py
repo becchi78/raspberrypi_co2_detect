@@ -4,7 +4,7 @@ import json
 import logging
 import urllib.error
 import urllib.request
-from typing import Any, Optional
+from typing import Any
 
 from co2_detector.exceptions import NotifierError
 from co2_detector.models import AirQualityData, AirStatus

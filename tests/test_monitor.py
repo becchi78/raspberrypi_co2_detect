@@ -9,7 +9,7 @@ from unittest.mock import MagicMock
 from co2_detector.config import Config
 from co2_detector.display.oled_ssd1306 import DummyDisplay
 from co2_detector.exceptions import SensorReadError
-from co2_detector.models import AirQualityData, AirStatus
+from co2_detector.models import AirStatus
 from co2_detector.monitor import AirConditionMonitor
 from co2_detector.sensors.base import BaseAirSensor
 
