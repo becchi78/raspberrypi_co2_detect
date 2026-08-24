@@ -89,7 +89,7 @@ flowchart LR
 
 - **ハードウェア**: Raspberry Pi (Zero / 3 / 4 / 5 等), CCS811 モジュール, SSD1306 OLED (128x64)
 - **OS**: Raspberry Pi OS (Debian 11 bullseye / 12 bookworm 推奨)
-- **Python**: Python 3.10 以上
+- **Python**: Python 3.12 以上
 
 ---
 

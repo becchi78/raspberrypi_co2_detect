@@ -7,9 +7,9 @@ from typing import Any, Optional
 try:
     from PIL import Image, ImageDraw, ImageFont
 except ImportError:
-    Image = None  # type: ignore[assignment,misc]
-    ImageDraw = None  # type: ignore[assignment,misc]
-    ImageFont = None  # type: ignore[assignment,misc]
+    Image = None  # type: ignore[assignment]
+    ImageDraw = None  # type: ignore[assignment]
+    ImageFont = None  # type: ignore[assignment]
 
 from co2_detector.display.base import BaseDisplay
 from co2_detector.exceptions import DisplayError
@@ -52,15 +52,15 @@ class SSD1306Display(BaseDisplay):
         if self._driver is None:
             self._driver = self._init_hardware_driver()
 
-        self.last_image: Optional[Image.Image] = None
+        self.last_image: Optional[Any] = None
 
     def _init_hardware_driver(self) -> Optional[Any]:
         """Try to initialize hardware SSD1306 driver, gracefully handle missing hardware/libs."""
         # 1. Try modern adafruit-circuitpython-ssd1306
         try:
-            import board
-            import busio
-            from adafruit_ssd1306 import SSD1306_I2C
+            import board  # type: ignore[import-not-found]
+            import busio  # type: ignore[import-not-found]
+            from adafruit_ssd1306 import SSD1306_I2C  # type: ignore[import-not-found]
 
             i2c = busio.I2C(board.SCL, board.SDA)
             disp = SSD1306_I2C(self.width, self.height, i2c, addr=self.i2c_address)
@@ -73,7 +73,7 @@ class SSD1306Display(BaseDisplay):
 
         # 2. Try legacy Adafruit_SSD1306
         try:
-            import Adafruit_SSD1306
+            import Adafruit_SSD1306  # type: ignore[import-not-found]
 
             disp = Adafruit_SSD1306.SSD1306_128_64(rst=None, i2c_address=self.i2c_address)
             disp.begin()
@@ -112,7 +112,9 @@ class SSD1306Display(BaseDisplay):
     def render_air_quality_image(self, data: AirQualityData) -> Any:
         """Create a 1-bit monochrome PIL Image depicting current air quality."""
         if Image is None or ImageDraw is None:
-            raise DisplayError("Pillow is required for SSD1306 image rendering. Please install pillow.")
+            raise DisplayError(
+                "Pillow is required for SSD1306 image rendering. Please install pillow."
+            )
 
         image = Image.new("1", (self.width, self.height), 0)
         draw = ImageDraw.Draw(image)
@@ -133,7 +135,9 @@ class SSD1306Display(BaseDisplay):
     def render_message_image(self, line1: str, line2: str = "") -> Any:
         """Create a 1-bit monochrome PIL Image depicting a message."""
         if Image is None or ImageDraw is None:
-            raise DisplayError("Pillow is required for SSD1306 image rendering. Please install pillow.")
+            raise DisplayError(
+                "Pillow is required for SSD1306 image rendering. Please install pillow."
+            )
 
         image = Image.new("1", (self.width, self.height), 0)
         draw = ImageDraw.Draw(image)

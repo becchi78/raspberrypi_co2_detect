@@ -71,7 +71,7 @@ class CCS811Sensor(BaseAirSensor):
             self._bus = bus
         else:
             try:
-                import smbus2
+                import smbus2  # type: ignore[import-not-found,import-untyped]
 
                 self._bus = smbus2.SMBus(bus_number)
                 self._owned_bus = True
